@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Memory Vault | 28 Years</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Montserrat:wght@200;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #d4af37;
+            --dark: #0a0a0c;
+        }
+        body {
+            background-color: var(--dark);
+            font-family: 'Montserrat', sans-serif;
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+        .font-serif { font-family: 'Cormorant Garamond', serif; }
+
+        /* Floating Back Button */
+        .back-btn {
+            position: fixed;
+            top: 1.5rem;
+            left: 1.5rem;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.6rem 1rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+        }
+        .back-btn:hover {
+            background: var(--gold);
+            color: var(--dark);
+            transform: translateY(-2px);
+        }
+
+        /* Video Container */
+        .video-wrapper {
+            position: relative;
+            cursor: pointer;
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        
+        .play-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.4s ease;
+            z-index: 10;
+        }
+        
+        .video-wrapper.playing .play-overlay {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Photo Cards */
+        .photo-card {
+            background: #111;
+            border-radius: 16px;
+            aspect-ratio: 1/1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: transform 0.4s ease;
+            overflow: hidden;
+        }
+        .photo-card:hover {
+            transform: scale(1.03);
+            border-color: var(--gold);
+        }
+
+        .placeholder-text {
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: #444;
+            text-transform: uppercase;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-up { animation: slideUp 1s ease forwards; }
+    </style>
+</head>
+<body class="p-6 md:p-12 lg:p-20">
+
+    <!-- Back Button -->
+    <a href="index.html" onclick="window.history.back()" class="back-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        <span>Back</span>
+    </a>
+
+    <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <header class="text-center mb-16 animate-up">
+            <h1 class="font-serif italic text-4xl md:text-6xl mb-4 text-amber-100">Shared Journey</h1>
+            <p class="text-[10px] tracking-[0.6em] uppercase text-amber-500 font-semibold">Captured in a frame, treasured in hearts—shared memories that last a lifetime.</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- Left Side: 3 Photos -->
+            <div class="lg:col-span-3 grid grid-cols-2 lg:grid-cols-1 gap-4">
+                <div class="photo-card animate-up" style="animation-delay: 0.1s">
+                    <img src="photo1.jpeg" alt="">
+                </div>
+                <div class="photo-card animate-up" style="animation-delay: 0.2s">
+                   <img src="photo2.jpeg" alt="">
+                </div>
+                <div class="photo-card animate-up lg:hidden xl:flex" style="animation-delay: 0.3s">
+                    <img src="photo3.jpeg" alt="">
+                </div>
+            </div>
+
+            <!-- Center: Video -->
+            <div class="lg:col-span-6 animate-up" style="animation-delay: 0.4s">
+                <div class="video-wrapper" id="videoContainer" onclick="toggleVideo()">
+                    <div class="play-overlay" id="overlay">
+                        <div class="w-20 h-20 bg-amber-500 rounded-full flex items-center justify-center shadow-2xl">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+                        </div>
+                    </div>
+                    <!-- Mock Video Element -->
+                    <video id="memoryVideo" class="w-full h-full object-cover bg-neutral-900" loop playsinline>
+                        <source src="25yearvideo.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    
+                    <div class="absolute bottom-6 left-6 right-6">
+                        <p class="font-serif text-2xl">The 25th Year Edit</p>
+                        <p class="text-[9px] uppercase tracking-widest opacity-60">Tap to play film</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: 3 Photos -->
+            <div class="lg:col-span-3 grid grid-cols-2 lg:grid-cols-1 gap-4">
+                <div class="photo-card animate-up" style="animation-delay: 0.5s">
+                    <img src="photo4.jpeg" alt="">
+                </div>
+                <div class="photo-card animate-up" style="animation-delay: 0.6s">
+                    <img src="photo5.jpeg" alt="">
+                </div>
+                <div class="photo-card animate-up" style="animation-delay: 0.7s">
+                   <img src="photo6.jpeg" alt="">
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer Caption -->
+        <footer class="mt-20 text-center animate-up" style="animation-delay: 0.9s">
+            <div class="inline-block h-[1px] w-12 bg-amber-500 mb-6"></div>
+            <p class="text-xs text-slate-500 max-w-sm mx-auto leading-loose tracking-widest uppercase">
+                A lifetime of moments captured in twenty-eight years of love.
+            </p>
+        </header>
+    </div>
+
+    <script>
+        function toggleVideo() {
+            const video = document.getElementById('memoryVideo');
+            const wrapper = document.getElementById('videoContainer');
+            const overlay = document.getElementById('overlay');
+
+            if (video.paused) {
+                video.play();
+                wrapper.classList.add('playing');
+            } else {
+                video.pause();
+                wrapper.classList.remove('playing');
+            }
+        }
+    </script>
+</body>
+</html>
